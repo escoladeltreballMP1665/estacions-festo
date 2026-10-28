@@ -1,0 +1,1434 @@
+/* =====================================================================
+   ESTILS DE L'APP DE LES ESTACIONS FESTO MPS
+   Cada bloc diu a quins elements s'aplica (el nom abans de la clau {)
+   i, a dins, quines propietats tenen (color, mida, marges...).
+   ===================================================================== */
+/* ---------- 2.1 Colors i lletres (variables) -------------------------
+   Es defineixen una sola vegada i després es fan servir a tot arreu
+   amb var(--nom). Si canvieu un color aquí, canvia a tota l'app.     */
+:root {
+  --fons:            #EDF1F4;   /* gris alumini, com la placa de les estacions */
+  --superficie:      #FFFFFF;   /* targetes blanques */
+  --linia:           #D3DBE1;   /* vores fines */
+  --text:            #10202C;   /* text principal */
+  --text-suau:       #556672;   /* text secundari */
+  --blau:            #0091DC;   /* blau Festo */
+  --blau-fosc:       #005A8F;   /* blau fosc per als degradats */
+  --text-sobre-blau: #FFFFFF;
+  --accent:          #0078B8;   /* icones i textos destacats */
+  --accent-suau:     #DDEFFA;   /* fons de les icones i del botó premut */
+  --avis:            #A35F00;   /* text "Properament" */
+  --entrada:         #1F6E5A;   /* etiqueta verda "Entrada" */
+  --entrada-fons:    #DCEFE8;
+  --sortida:         #9A3412;   /* etiqueta vermellosa "Sortida" */
+  --sortida-fons:    #F8E3D8;
+  --graella:         rgba(0, 120, 184, .09);   /* línies del paper de plànol */
+  --llum-foto:       rgba(0, 145, 220, .14);   /* resplendor darrere la foto */
+  --ombra:           0 1px 2px rgba(16, 32, 44, .06), 0 8px 24px rgba(16, 32, 44, .07);
+
+  /* Vidre líquid (Liquid Glass): material transparent dels botons */
+  --taca-1:      rgba(0, 145, 220, .16);      /* taques de color del fons */
+  --taca-2:      rgba(92, 193, 245, .20);
+  --vidre:       rgba(255, 255, 255, .07);    /* vidre dels botons: gairebé transparent */
+  --vidre-fort:  rgba(255, 255, 255, .78);    /* lent dels selectors (l'opció triada) */
+  --vidre-reflex: rgba(255, 255, 255, .95);   /* reflex de llum de la vora */
+  --vidre-vora:  inset 0 1px 1px rgba(255, 255, 255, .85), inset 0 -1px 1px rgba(255, 255, 255, .35),
+                 inset 0 0 0 .5px rgba(0, 60, 100, .16);
+  --vidre-ombra: 0 10px 24px -10px rgba(0, 50, 90, .30), 0 2px 6px -2px rgba(0, 50, 90, .14);
+
+  /* Mòdul de LEDs: imita la caixa fosca d'un mòdul d'E/S real,
+     i es veu igual en mode clar i en mode fosc */
+  --plc-fons:        #142029;
+  --plc-vora:        #2B3B48;
+  --plc-text:        #C7D5DF;
+  --plc-text-suau:   #7F95A5;
+  --led-apagat:      #2A3844;
+  --led-entrada:     #3BE38C;   /* LED verd: entrada connectada */
+  --led-sortida:     #FFB547;   /* LED taronja: sortida connectada */
+
+  --lletra-titols: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --lletra-text:   "Barlow", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --lletra-codi:   "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --radi: 16px;   /* arrodoniment de les cantonades */
+}
+
+/* ---------- 2.2 Mode fosc ------------------------------------------
+   Si el mòbil està en mode fosc, es canvien els colors de les variables.
+   (Hi ha dos blocs iguals: el primer segueix el mòbil, el segon s'activa
+   si la pàgina es força a mode fosc.)                                  */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fons: #0B1319;  --superficie: #141F28;  --linia: #263540;
+    --text: #EAF1F6;  --text-suau: #9FB0BD;
+    --blau: #0091DC;  --blau-fosc: #004A75;   --text-sobre-blau: #FFFFFF;
+    --accent: #5CC1F5; --accent-suau: #11324A; --avis: #F2B35C;
+    --entrada: #7FD3B9; --entrada-fons: #173329;
+    --sortida: #F4A27E; --sortida-fons: #3B2117;
+    --graella: rgba(92, 193, 245, .07);  --llum-foto: rgba(0, 145, 220, .22);
+    --plc-fons: #070D12;  --plc-vora: #22313D;
+    --taca-1: rgba(0, 145, 220, .20);  --taca-2: rgba(0, 90, 143, .32);
+    --vidre: rgba(255, 255, 255, .06);  --vidre-fort: rgba(255, 255, 255, .16);  --vidre-reflex: rgba(255, 255, 255, .5);
+    --vidre-vora: inset 0 1px 1px rgba(255, 255, 255, .22), inset 0 -1px 1px rgba(255, 255, 255, .06),
+                  inset 0 0 0 .5px rgba(255, 255, 255, .10);
+    --vidre-ombra: 0 10px 24px -10px rgba(0, 0, 0, .6), 0 2px 6px -2px rgba(0, 0, 0, .4);
+    --ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fons: #0B1319;  --superficie: #141F28;  --linia: #263540;
+  --text: #EAF1F6;  --text-suau: #9FB0BD;
+  --blau: #0091DC;  --blau-fosc: #004A75;   --text-sobre-blau: #FFFFFF;
+  --accent: #5CC1F5; --accent-suau: #11324A; --avis: #F2B35C;
+  --entrada: #7FD3B9; --entrada-fons: #173329;
+  --sortida: #F4A27E; --sortida-fons: #3B2117;
+  --graella: rgba(92, 193, 245, .07);  --llum-foto: rgba(0, 145, 220, .22);
+  --plc-fons: #070D12;  --plc-vora: #22313D;
+  --taca-1: rgba(0, 145, 220, .20);  --taca-2: rgba(0, 90, 143, .32);
+  --vidre: rgba(255, 255, 255, .06);  --vidre-fort: rgba(255, 255, 255, .16);  --vidre-reflex: rgba(255, 255, 255, .5);
+  --vidre-vora: inset 0 1px 1px rgba(255, 255, 255, .22), inset 0 -1px 1px rgba(255, 255, 255, .06),
+                inset 0 0 0 .5px rgba(255, 255, 255, .10);
+  --vidre-ombra: 0 10px 24px -10px rgba(0, 0, 0, .6), 0 2px 6px -2px rgba(0, 0, 0, .4);
+  --ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+/* ---------- 2.3 Pàgina general ------------------------------------ */
+* { box-sizing: border-box; }          /* les mides inclouen les vores */
+html, body { margin: 0; }
+[hidden] { display: none !important; }   /* l'atribut hidden sempre amaga */
+
+/* El fons té unes taques de blau molt suaus perquè el vidre dels botons
+   tingui alguna cosa a refractar, com al fons de pantalla d'un iPhone */
+body {
+  background:
+    radial-gradient(60% 38% at 0% 0%, var(--taca-1), transparent 70%),
+    radial-gradient(55% 35% at 100% 35%, var(--taca-2), transparent 70%),
+    radial-gradient(70% 40% at 20% 100%, var(--taca-1), transparent 70%),
+    var(--fons);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--lletra-text);
+  font-size: 18px;
+  line-height: 1.45;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Columna central: com a màxim 640 px d'ample i com a mínim tota l'alçada
+   de la pantalla. Els marges laterals respecten la "osca" dels mòbils. */
+.columna {
+  max-width: 640px;
+  margin: 0 auto;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-left:  max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 14px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cada pantalla apila els seus blocs un sota l'altre amb 18 px de separació */
+.pantalla {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+
+/* Contorn blau quan es navega amb teclat (accessibilitat) */
+:focus-visible {
+  outline: 3px solid var(--blau);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+h1, h2, h3 {
+  font-family: var(--lletra-titols);
+  text-wrap: balance;
+  margin: 0;
+  line-height: 1.02;
+}
+
+/* Petit text en majúscules damunt dels títols */
+.avantitol {
+  font: 600 14px/1.2 var(--lletra-text);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Icones petites dins de textos */
+.icona-petita { width: 16px; height: 16px; flex: none; }
+
+/* ---------- 2.4 Barra superior: logo i botó "Estacions" ------------- */
+.barra-superior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.logo { display: block; line-height: 0; }
+.logo img { height: 68px; width: auto; }
+
+/* Hi ha dos logos: el normal i un amb el text clar per al mode fosc.
+   Aquestes regles amaguen el que no toca. */
+.logo .logo-fosc { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo .logo-clar { display: none; }
+  :root:not([data-theme="light"]) .logo .logo-fosc { display: block; }
+}
+:root[data-theme="dark"] .logo .logo-clar { display: none; }
+:root[data-theme="dark"] .logo .logo-fosc { display: block; }
+
+/* Càpsules de dalt: "Festo Estacions" (obre la web de Festo) i "‹ Estacions" (torna) */
+.segell, .boto-tornar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 16px/1 var(--lletra-text);
+  color: var(--accent);
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 999px;            /* forma de càpsula */
+  white-space: nowrap;
+}
+.boto-tornar { font-size: 17px; }
+
+/* ---------- 2.5 Pantalla principal ------------------------------- */
+.portada {
+  position: relative;
+  isolation: isolate;
+}
+/* Quadrícula de paper de plànol darrere el títol, que s'esvaeix cap avall */
+.portada::before {
+  content: "";
+  position: absolute;
+  inset: -10px -6px -14px;
+  z-index: -1;
+  background:
+    linear-gradient(var(--graella) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(90deg, var(--graella) 1px, transparent 1px) 0 0 / 22px 22px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+          mask-image: linear-gradient(to bottom, #000 30%, transparent);
+}
+.portada h1 {
+  font-size: clamp(40px, 11vw, 60px);   /* creix amb la pantalla, entre 40 i 60 px */
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* Llista dels tres botons: ocupa tot l'espai que queda a la pantalla */
+.estacions {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Cada botó d'estació: rectangle blau amb degradat */
+.boto-estacio {
+  flex: 1;
+  min-height: 170px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  color: var(--text-sobre-blau);
+  border-radius: var(--radi);
+  background:
+    radial-gradient(circle at 78% 60%, rgba(255, 255, 255, .18), transparent 55%),
+    linear-gradient(105deg, var(--blau-fosc) 0%, var(--blau) 78%);
+  /* vora de vidre (reflex de llum a dalt) i ombra blava a sota */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .35),
+    inset 0 0 0 1px rgba(255, 255, 255, .12),
+    0 10px 24px -12px rgba(0, 70, 120, .55);
+  --s-premut: 1.025;               /* quant creix en prémer-lo (vegeu 2.14) */
+}
+
+/* Línies de plànol molt suaus dins del botó */
+.boto-estacio::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(90deg, rgba(255, 255, 255, .07) 1px, transparent 1px) 0 0 / 20px 20px;
+  -webkit-mask-image: linear-gradient(105deg, transparent 35%, #000);
+          mask-image: linear-gradient(105deg, transparent 35%, #000);
+  pointer-events: none;
+}
+
+/* Raig de llum que creua el botó una sola vegada en obrir l'app */
+.boto-estacio::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .28) 46%, transparent 62%);
+  transform: translateX(-130%);
+  pointer-events: none;
+}
+
+/* Textos del botó, a la meitat esquerra */
+.boto-estacio .textos {
+  position: absolute;
+  left: 18px;
+  top: 16px;
+  bottom: 14px;
+  right: 42%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  z-index: 1;
+}
+.boto-estacio .nom {
+  font: 700 clamp(32px, 9vw, 44px)/.95 var(--lletra-titols);
+}
+.boto-estacio .nom-catala {
+  font: 600 16px/1.25 var(--lletra-text);
+  opacity: .92;
+}
+/* Fila de baix: càpsula "Obre" */
+.boto-estacio .peu-boto {
+  margin-top: auto;                 /* empeny la fila a baix de tot */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.boto-estacio .obre {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 15px/1 var(--lletra-text);
+  border-radius: 999px;
+  padding: 9px 14px;
+  /* càpsula de vidre sobre el blau */
+  background: linear-gradient(180deg, rgba(255, 255, 255, .32), rgba(255, 255, 255, .10));
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+          backdrop-filter: blur(10px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), inset 0 0 0 1px rgba(255, 255, 255, .22);
+}
+
+/* Foto de l'estació, a la meitat dreta del botó */
+.boto-estacio img {
+  position: absolute;
+  right: 14px;
+  bottom: 6%;
+  height: 88%;
+  width: 60%;
+  object-fit: contain;              /* es veu sencera, sense retallar */
+  object-position: right bottom;
+  filter: drop-shadow(0 10px 14px rgba(0, 30, 50, .4));
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1);
+}
+@media (hover: hover) {
+  .boto-estacio:hover img { transform: scale(1.05) translateY(-2px); }
+}
+
+/* ---------- 2.6 Pantalla de cada estació ------------------------ */
+.capcalera-estacio {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.capcalera-estacio h1 { font-size: clamp(36px, 10vw, 52px); }
+.capcalera-estacio .nom-angles {
+  align-self: flex-start;
+  font: 600 15px/1 var(--lletra-codi);
+  color: var(--text-suau);
+  border: 1px solid var(--linia);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+/* Targeta blanca amb la foto, el resum i les dades tècniques */
+.fitxa {
+  margin: 0;
+  background: var(--superficie);
+  border: 1px solid var(--linia);
+  border-radius: var(--radi);
+  box-shadow: var(--ombra);
+  overflow: hidden;
+}
+
+/* Escenari: fons de paper de plànol amb una llum blava.
+   A dins hi ha un carrusel de dues diapositives: la foto i el vídeo.
+   Es passa d'una a l'altra lliscant el dit o amb el selector de sota. */
+.escenari {
+  position: relative;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 60%, var(--llum-foto), transparent 70%),
+    linear-gradient(var(--graella) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--graella) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--superficie);
+  border-bottom: 1px solid var(--linia);
+}
+.carrusel {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;                   /* sense barra de desplaçament */
+}
+.carrusel::-webkit-scrollbar { display: none; }
+.diapo {
+  position: relative;
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  padding: 18px 16px 14px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.diapo .amplia {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  font: 600 13px/1 var(--lletra-text);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 9px 11px;
+  cursor: zoom-in;
+}
+
+/* Diapositiva del vídeo */
+.diapo-video { align-content: center; }
+.marc-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #FFFFFF;
+  box-shadow: 0 12px 28px -14px rgba(0, 40, 70, .45), 0 0 0 1px var(--linia);
+}
+.marc-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #FFFFFF;
+}
+.peu-video {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 13px/1.2 var(--lletra-text);
+  color: var(--text-suau);
+}
+.peu-video .icona-petita { color: var(--accent); }
+
+/* Selector de velocitat del model 3D (càmera lenta): 1, 0.5 i 0.25 */
+.velocitat {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+}
+.velocitat button {
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 8px;
+  min-width: 32px;
+  background: transparent;
+  font: 600 13px/1 var(--lletra-codi);
+  color: var(--text-suau);
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.velocitat button[aria-pressed="true"] {
+  color: #FFFFFF;
+  background: linear-gradient(180deg, #2AA6E8, #0078B8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45);
+}
+/* Diapositiva del model 3D */
+.diapo-3d { align-content: center; }
+.marc-3d {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 52vh;
+  margin-inline: auto;
+}
+.marc-3d canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+.marc-3d canvas:active { cursor: grabbing; }
+.avis-3d {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  text-align: center;
+  font: 600 15px/1.3 var(--lletra-text);
+  color: var(--text-suau);
+}
+/* Controls damunt del model, separats 12 px de les vores:
+     a dalt a l'esquerra "Gira", a dalt a la dreta la velocitat
+     i a baix a la dreta el botó d'aturar. Apareixen quan el model ja s'ha carregat. */
+.controls-3d {
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;            /* els dits passen al model, menys als botons */
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+.marc-3d.carregat .controls-3d { opacity: 1; }
+.controls-3d > :is(span, button) { position: absolute; pointer-events: auto; }
+.pista-3d {
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px 7px 9px;
+  border-radius: 999px;
+  font: 600 13px/1 var(--lletra-text);
+  color: var(--text-suau);
+}
+.controls-3d > .pista-3d { pointer-events: none; }
+.controls-3d > .velocitat { right: 0; top: 0; }
+.boto-3d {
+  right: 0;
+  bottom: 0;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  cursor: pointer;
+}
+.boto-3d svg { width: 18px; height: 18px; }
+
+/* Selector Foto / Vídeo / 3D (control segmentat amb lent, com el filtre de la taula) */
+.selector-diapo {
+  position: relative;
+  display: flex;
+  width: min(320px, 86%);
+  margin: 0 auto 14px;
+  padding: 4px;
+  border-radius: 14px;
+}
+.selector-diapo .lent {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 3);
+  border-radius: 10px;
+  background: var(--vidre-fort);
+  box-shadow: var(--vidre-vora), 0 3px 10px -2px rgba(0, 50, 90, .22);
+  translate: calc(var(--progres, 0) * 100%) 0;
+}
+.selector-diapo button {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 6px;
+  background: transparent;
+  font: 600 15px/1 var(--lletra-text);
+  color: var(--text-suau);
+  cursor: pointer;
+  transition: color .2s ease;
+}
+.selector-diapo button .icona-petita { width: 17px; height: 17px; }
+.selector-diapo button[aria-pressed="true"] { color: var(--text); }
+.selector-diapo button[aria-pressed="true"] .icona-petita { color: var(--accent); }
+
+.fitxa-text {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.fitxa-text p { margin: 0; font-size: 17px; color: var(--text-suau); }
+
+.dades-tecniques {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.dada {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 14px/1.2 var(--lletra-codi);
+  background: var(--fons);
+  border: 1px solid var(--linia);
+  border-radius: 8px;
+  padding: 9px 10px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.dada .icona-petita { color: var(--accent); }
+
+/* Els quatre botons, en una graella de 2 columnes */
+.accions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.accio {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 140px;
+  padding: 16px;
+  border-radius: var(--radi);
+  text-decoration: none;
+  border: 0;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+.accio .dalt { display: flex; align-items: flex-start; justify-content: space-between; }
+.accio .caixa-icona {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-suau);
+  color: var(--accent);
+}
+.accio .icona { width: 28px; height: 28px; }
+.accio .senyal { width: 20px; height: 20px; color: var(--text-suau); transition: transform .25s ease; }
+.accio .etiqueta { font: 700 clamp(22px, 6.4vw, 26px)/1.02 var(--lletra-titols); }
+.accio .pista { display: block; margin-top: 4px; font-size: 15px; color: var(--text-suau); }
+
+/* Botó de la taula quan està obert: es pinta de blau i la fletxa gira */
+.accio[aria-pressed="true"] {
+  background: var(--accent-suau);
+  box-shadow: var(--vidre-vora), 0 0 0 2px var(--blau), var(--vidre-ombra);
+}
+.accio[aria-pressed="true"] .caixa-icona { background: var(--blau); color: #FFFFFF; }
+.accio[aria-pressed="true"] .senyal { transform: rotate(180deg); }
+
+/* Botó del Grafcet quan encara no hi ha enllaç: vora discontínua */
+.accio.properament { border: 1.5px dashed var(--linia); cursor: default; background: transparent; }
+.accio.properament .caixa-icona { background: transparent; border: 1.5px dashed var(--linia); color: var(--text-suau); }
+.accio.properament .pista { color: var(--avis); font-weight: 600; }
+
+/* ---------- 2.7 Taula d'entrades i sortides (i secció del Grafcet) --- */
+.taula-es, .grafcet-es {
+  background: var(--superficie);
+  border: 1px solid var(--linia);
+  border-radius: var(--radi);
+  box-shadow: var(--ombra);
+  overflow: hidden;
+  scroll-margin-top: 12px;
+}
+:is(.taula-es, .grafcet-es) h2 { font-size: 30px; padding: 16px 16px 4px; }
+:is(.taula-es, .grafcet-es) .intro { margin: 0; padding: 0 16px 14px; font-size: 16px; color: var(--text-suau); }
+
+/* Si la taula no hi cap, es pot lliscar de costat sense moure la pàgina */
+.lliscador { overflow-x: auto; }
+
+table { border-collapse: collapse; width: 100%; font-size: 16px; }
+thead th {
+  font: 600 12px/1.2 var(--lletra-text);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-suau);
+  text-align: left;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--linia);
+  background: var(--fons);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--linia);
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: 0; }
+
+/* Files separadores "ENTRADES" i "SORTIDES" */
+tr.separador td {
+  background: var(--fons);
+  font: 600 12px/1 var(--lletra-text);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-suau);
+  padding: 8px 10px;
+}
+
+/* Fila destacada quan es toca un LED: s'il·lumina i s'apaga a poc a poc */
+tr.destacada td { animation: destaca 2.2s ease-out; }
+@keyframes destaca {
+  0%, 35% { background: var(--accent-suau); }
+  100%    { background: transparent; }
+}
+
+.adreca {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 17px/1.2 var(--lletra-codi);
+  white-space: nowrap;
+}
+.simbol { font: 500 14px/1.3 var(--lletra-codi); color: var(--text-suau); white-space: nowrap; }
+
+/* Punt rodó amb el color del fil SysLink */
+.fil {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  flex: none;
+  border: 1px solid rgba(0, 0, 0, .25);
+}
+
+/* Etiquetes de color "Entrada" i "Sortida" */
+.tipus {
+  display: inline-block;
+  font: 600 13px/1 var(--lletra-text);
+  padding: 5px 7px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.tipus.entrada { background: var(--entrada-fons); color: var(--entrada); }
+.tipus.sortida { background: var(--sortida-fons); color: var(--sortida); }
+
+.adreces-lliures {
+  padding: 12px 16px 16px;
+  font-size: 15px;
+  color: var(--text-suau);
+  border-top: 1px solid var(--linia);
+}
+.adreces-lliures code {
+  display: inline-block;
+  margin: 2px 2px 0 0;
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-family: var(--lletra-codi);
+  font-weight: 600;
+  color: var(--text);
+  background: var(--fons);
+  scroll-margin: 40vh 0;
+}
+.adreces-lliures code.destacada { animation: destaca 2.2s ease-out; }
+
+/* ---------- 2.7b Grafcet -------------------------------------------
+   El diagrama sobre paper de plànol,
+   els botons per obrir-lo a grafcet.io i les explicacions de sota. */
+.grafcet-dibuix {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 18px 12px 14px;
+  border: 0;
+  border-block: 1px solid var(--linia);
+  background:
+    linear-gradient(var(--graella) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--graella) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--superficie);
+  color: var(--text);
+}
+.grafcet-dibuix svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.grafcet-enllacos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 16px 4px;
+}
+.grafcet-enllacos .info-enllac { flex: 1 1 200px; }
+.boto-baixa {
+  flex: 1 1 200px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  font: 600 16px/1 var(--lletra-text);
+  color: var(--accent);
+  cursor: pointer;
+}
+.grafcet-es h3 {
+  margin: 18px 16px 8px;
+  font: 600 12px/1 var(--lletra-text);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+/* Què fa cada pas: el número dins d'un quadrat, com al diagrama */
+.passos-grafcet {
+  list-style: none;
+  margin: 0;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.passos-grafcet li { display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: start; font-size: 16px; }
+.passos-grafcet b {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--text);
+  font: 600 14px/1 var(--lletra-codi);
+}
+.passos-grafcet li.inicial b { box-shadow: inset 0 0 0 2px var(--superficie), inset 0 0 0 3.5px var(--text); }
+.passos-grafcet span { padding-top: 5px; }
+/* Variables: adreça, símbol i què vol dir */
+.variables-grafcet { list-style: none; margin: 0; padding: 0 16px; }
+.variables-grafcet li {
+  display: grid;
+  grid-template-columns: 54px 62px 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--linia);
+  font-size: 15px;
+}
+.variables-grafcet li:last-child { border-bottom: 0; }
+.variables-grafcet code { font: 600 15px/1.3 var(--lletra-codi); }
+.variables-grafcet .simbol { font-size: 13px; line-height: 1.6; }
+/* Com es llegeix: la notació, amb un exemple a l'esquerra */
+.notacio-grafcet { list-style: none; margin: 0; padding: 0 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+.notacio-grafcet li { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: center; font-size: 15px; color: var(--text-suau); }
+.notacio-grafcet code { justify-self: start; font: 600 14px/1.3 var(--lletra-codi); color: var(--text); }
+.notacio-grafcet .no { text-decoration: overline; }
+.notacio-grafcet .caixa { border: 1.5px solid var(--text); padding: 2px 7px; }
+
+/* ---------- 2.8 Mòdul de LEDs del PLC --------------------------
+   Caixa fosca amb 8 LEDs d'entrada (I0-I7) i 8 de sortida (Q0-Q7),
+   com els pilots d'un mòdul d'E/S real. Els connectats estan encesos. */
+.modul-plc {
+  margin: 0 16px 14px;
+  padding: 14px 12px 12px;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .04), transparent 40%),
+    var(--plc-fons);
+  border: 1px solid var(--plc-vora);
+  color: var(--plc-text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+.modul-capcalera {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px 12px;
+  font: 600 12px/1.2 var(--lletra-codi);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--plc-text-suau);
+  margin-bottom: 10px;
+}
+.llegenda { display: inline-flex; gap: 10px; text-transform: none; letter-spacing: 0; }
+.llegenda span { display: inline-flex; align-items: center; gap: 5px; }
+.llegenda i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+.fila-leds + .fila-leds { margin-top: 10px; }
+.titol-leds {
+  display: block;
+  font: 600 11px/1 var(--lletra-text);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--plc-text-suau);
+  margin-bottom: 6px;
+}
+.leds {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+}
+.led {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 0 8px;
+  border: 1px solid var(--plc-vora);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .02);
+  color: var(--plc-text);
+  font: 600 12px/1 var(--lletra-codi);
+}
+button.led { cursor: pointer; --s-premut: 1.12; }
+.led .llum {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--led-apagat);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, .5);
+}
+.led.lliure { color: var(--plc-text-suau); opacity: .65; }
+button.led.lliure { opacity: .75; }
+.led.entrada .llum {
+  background: radial-gradient(circle at 35% 35%, #EFFFF5 0 10%, var(--led-entrada) 38%, #14894D 100%);
+  box-shadow: 0 0 10px 1px rgba(59, 227, 140, .55);
+}
+.led.sortida .llum {
+  background: radial-gradient(circle at 35% 35%, #FFF6E5 0 10%, var(--led-sortida) 38%, #B66A00 100%);
+  box-shadow: 0 0 10px 1px rgba(255, 181, 71, .55);
+}
+.led[aria-pressed="true"] { border-color: var(--plc-text); background: rgba(255, 255, 255, .08); }
+.modul-ajuda { margin: 10px 0 0; font-size: 13px; color: var(--plc-text-suau); }
+
+/* ---------- 2.9 Filtre de la taula ------------------------------ */
+/* Control segmentat com el d'iOS: una "lent" de vidre llisca
+   fins a l'opció triada i creix una mica mentre es prem */
+.filtre {
+  position: relative;
+  display: flex;
+  margin: 0 16px 12px;
+  padding: 4px;
+  border-radius: 14px;
+}
+.filtre .lent {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: 0;
+  border-radius: 10px;
+  background: var(--vidre-fort);
+  box-shadow: var(--vidre-vora), 0 3px 10px -2px rgba(0, 50, 90, .22);
+  transition:
+    translate .55s cubic-bezier(.34, 1.56, .64, 1),
+    width     .55s cubic-bezier(.34, 1.56, .64, 1),
+    scale     .30s cubic-bezier(.34, 1.56, .64, 1);
+}
+.filtre.premut .lent { scale: 1.08; }
+.filtre button {
+  position: relative;               /* per quedar damunt de la lent */
+  z-index: 1;
+  flex: 1;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 6px;
+  background: transparent;
+  font: 600 15px/1 var(--lletra-text);
+  color: var(--text-suau);
+  cursor: pointer;
+  transition: color .2s ease;
+}
+.filtre button[aria-pressed="true"] { color: var(--text); }
+
+/* ---------- 2.10 Altres estacions ------------------------------- */
+.altres h2 { font-size: 26px; margin-bottom: 10px; }
+.altres-graella {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.mini-estacio {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 132px;
+  padding: 12px 14px;
+  border-radius: var(--radi);
+  text-decoration: none;
+  color: var(--text-sobre-blau);
+  background: linear-gradient(120deg, var(--blau-fosc), var(--blau));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), inset 0 0 0 1px rgba(255, 255, 255, .12);
+  --s-premut: 1.04;
+}
+.mini-estacio .nom { position: relative; z-index: 1; font: 700 24px/1 var(--lletra-titols); }
+.mini-estacio .fletxa { position: relative; z-index: 1; font: 600 14px/1 var(--lletra-text); opacity: .85; }
+.mini-estacio img {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 72%;
+  height: 62%;
+  object-fit: contain;
+  object-position: right bottom;
+  filter: drop-shadow(0 6px 8px rgba(0, 30, 50, .4));
+}
+
+/* ---------- 2.11 Visor de la foto ampliada ----------------------
+   Només la foto, sense punts ni llista. Es pot ampliar pessigant amb
+   dos dits, fent doble toc, amb la roda del ratolí o amb els botons − +,
+   i moure arrossegant. */
+.visor {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(0, 145, 220, .22), transparent 65%),
+    #060C12;
+}
+.visor-zona {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: max(64px, calc(env(safe-area-inset-top, 0px) + 56px)) max(12px, env(safe-area-inset-right, 0px))
+           max(84px, calc(env(safe-area-inset-bottom, 0px) + 76px)) max(12px, env(safe-area-inset-left, 0px));
+  overflow: hidden;
+  touch-action: none;                      /* els dits fan zoom a la foto, no a la pàgina */
+  cursor: grab;
+}
+.visor-zona:active { cursor: grabbing; }
+.visor-zona img {
+  max-width: 100%;
+  max-height: 100%;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  -webkit-user-select: none;
+          user-select: none;
+  -webkit-user-drag: none;
+}
+.visor-zona img.suau { transition: transform .35s cubic-bezier(.2, .8, .2, 1); }
+.visor-zoom {
+  position: absolute;
+  left: 50%;
+  bottom: max(18px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  color: #FFFFFF;
+}
+/* Vidre sobre el fons fosc del visor (barra de zoom i botó de tancar) */
+.visor-zoom, .visor .tancar {
+  background: rgba(255, 255, 255, .08);
+  -webkit-backdrop-filter: blur(14px) saturate(190%);
+          backdrop-filter: blur(14px) saturate(190%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, .3), inset 0 -1px 1px rgba(255, 255, 255, .08),
+              inset 0 0 0 .5px rgba(255, 255, 255, .14), 0 10px 24px -8px rgba(0, 0, 0, .6);
+}
+.visor-zoom button {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+.visor-zoom button svg { width: 22px; height: 22px; }
+.visor-zoom output {
+  min-width: 56px;
+  text-align: center;
+  font: 600 14px/1 var(--lletra-codi);
+}
+.visor .tancar {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top, 0px));
+  right: max(12px, env(safe-area-inset-right, 0px));
+  width: 44px; height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+.visor .tancar svg { width: 22px; height: 22px; }
+
+/* ---------- 2.12 Peu de pàgina i animacions --------------------- */
+footer {
+  margin-top: auto;                 /* sempre a baix de tot */
+  padding-top: 4px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-suau);
+}
+
+/* Les animacions només es fan si el mòbil no té activada l'opció
+   de reduir moviment (accessibilitat) */
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Cada bloc de la pantalla puja una mica, un darrere l'altre */
+  .pantalla > *, .estacions > * {
+    animation: puja .55s cubic-bezier(.2, .7, .2, 1) backwards;
+  }
+  .pantalla > :nth-child(2), .estacions > :nth-child(1) { animation-delay: .06s; }
+  .pantalla > :nth-child(3), .estacions > :nth-child(2) { animation-delay: .12s; }
+  .pantalla > :nth-child(4), .estacions > :nth-child(3) { animation-delay: .18s; }
+  .pantalla > :nth-child(5) { animation-delay: .24s; }
+  .pantalla > :nth-child(n+6) { animation-delay: .3s; }
+  @keyframes puja {
+    from { transform: translateY(14px); opacity: 0; }
+    to   { transform: none; opacity: 1; }
+  }
+
+  /* El raig de llum creua cada botó d'estació, un darrere l'altre */
+  .boto-estacio::after { animation: brilla 1.3s ease-out .55s both; }
+  .estacions > :nth-child(2)::after { animation-delay: .75s; }
+  .estacions > :nth-child(3)::after { animation-delay: .95s; }
+  @keyframes brilla { to { transform: translateX(130%); } }
+
+  /* La taula i el visor apareixen suaument */
+  .taula-es:not([hidden]), .grafcet-es:not([hidden]) { animation: puja .4s cubic-bezier(.2, .7, .2, 1); }
+  .visor:not([hidden]) { animation: apareix .25s ease-out; }
+  @keyframes apareix { from { opacity: 0; } }
+}
+
+/* ---------- 2.13 Foto interactiva amb els components ----------------
+   .mapa  -> caixa amb la mateixa proporció que la foto: així els punts,
+             col·locats en %, cauen sempre al mateix lloc de la màquina.
+   .punt  -> cercle numerat damunt d'un component. Batega suaument.
+   .peca  -> l'element triat, retallat de la mateixa foto, que s'aixeca una mica.
+   .info-component -> fitxa de sota: llista de components o detall. */
+.mapa {
+  --alt-max: 50vh;                         /* alçada màxima de la foto */
+  position: relative;
+  width: min(100%, calc(var(--alt-max) * var(--proporcio)));
+  aspect-ratio: var(--proporcio);
+  margin-inline: auto;
+}
+
+/* El "llenç" porta la foto i els punts */
+.llenc { position: absolute; inset: 0; }
+.llenc img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-user-select: none;
+          user-select: none;
+  -webkit-touch-callout: none;
+}
+.llenc .foto-base {
+  filter: drop-shadow(0 14px 18px rgba(0, 40, 70, .22));
+  transition: filter .5s ease;
+}
+/* En triar un element, la resta de la foto es difumina una mica... */
+.mapa.amb-seleccio .foto-base { filter: blur(2.5px) saturate(.65) brightness(.95); }
+
+/* Punts: petits i transparents perquè es vegi la màquina de darrere */
+.punt {
+  position: absolute;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;                 /* el centre del cercle cau sobre el punt */
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 700 11px/1 var(--lletra-codi);
+  color: #FFFFFF;
+  text-shadow: 0 1px 2px rgba(0, 30, 50, .7);
+  background: rgba(0, 90, 143, .32);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .95), 0 1px 4px rgba(0, 30, 50, .35);
+  cursor: pointer;
+  transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), opacity .25s ease, background .2s ease;
+}
+.punt::before {                            /* zona tocable més gran que el cercle */
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+}
+.punt:active { transform: scale(1.25); transition-duration: .15s; }
+.punt[aria-pressed="true"] {
+  opacity: 1 !important;
+  z-index: 3;
+  background: #0091DC;
+  transform: scale(1.1);
+  box-shadow: inset 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(0, 145, 220, .35), 0 4px 10px rgba(0, 40, 70, .4);
+}
+
+/* ...i l'element s'aixeca lleugerament de la màquina.
+   .peca és el retall de l'element (tret d'aquesta mateixa foto i ampliat
+   amb superresolució), col·locat exactament damunt del seu lloc a la foto.
+   En triar-lo puja uns píxels i creix una mica (--aixeca). */
+.peca {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transform-origin: 50% 85%;
+  /* només una ombra suau a sota, com si s'enlairés */
+  filter: drop-shadow(0 10px 10px rgba(0, 30, 50, .3));
+  transition: transform .45s cubic-bezier(.34, 1.4, .64, 1), opacity .2s ease;
+  -webkit-user-select: none;
+          user-select: none;
+}
+.mapa.amb-seleccio .peca.visible {
+  opacity: 1;
+  transform: translateY(-6px) scale(var(--aixeca, 1.06));
+}
+/* Nom de l'element, just a sobre o a sota de la peça (el col·loca el programa).
+   És fosc i opac perquè es llegeixi bé encara que quedi damunt de la placa
+   d'alumini o de qualsevol altra part clara de la foto. */
+.nom-peca {
+  position: absolute;
+  z-index: 5;
+  width: max-content;
+  max-width: min(240px, calc(100% - 24px));
+  padding: 8px 13px;
+  border-radius: 12px;
+  font: 600 15px/1.2 var(--lletra-text);
+  text-align: center;
+  color: #FFFFFF;
+  background: rgba(12, 30, 44, .92);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 6px 16px rgba(0, 20, 35, .35);
+  pointer-events: none;
+}
+.mapa.amb-seleccio .punt, .mapa.amb-seleccio .punt[aria-pressed="true"] { opacity: 0 !important; pointer-events: none; }
+
+.info-component {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--linia);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+/* Botó "Components" de sota la foto: obre i tanca la llegenda */
+.info-component.compacta { align-items: center; }
+.boto-llegenda {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px 10px 12px;
+  font: 600 16px/1 var(--lletra-text);
+  color: var(--accent);
+  cursor: pointer;
+}
+.boto-llegenda .icona { width: 22px; height: 22px; }
+.boto-llegenda .compte {
+  min-width: 24px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  font: 700 13px/1 var(--lletra-codi);
+  color: #FFFFFF;
+  background: radial-gradient(circle at 35% 30%, #5CC1F5, #0091DC 55%, #005A8F);
+}
+.boto-llegenda .senyal { width: 18px; height: 18px; transition: transform .35s cubic-bezier(.34, 1.56, .64, 1); }
+.boto-llegenda[aria-expanded="true"] .senyal { transform: rotate(180deg); }
+/* Llegenda: llista agrupada per funció, una fila per component (com els ajustos d'iOS) */
+.info-component > * { flex-shrink: 0; }      /* res s'aixafa quan la fitxa té alçada limitada */
+.info-llista {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-margin-bottom: 16px;
+}
+.grup-llegenda h3 {
+  margin: 0 0 6px 14px;
+  font: 600 12px/1 var(--lletra-text);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.grup-llegenda .files { position: relative; border-radius: 14px; overflow: hidden; }
+.fila-component {
+  display: grid;
+  grid-template-columns: 26px 1fr 16px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.fila-component + .fila-component { border-top: 1px solid var(--linia); }
+.fila-component .noms { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.fila-component .noms span { font: 600 16px/1.2 var(--lletra-text); }
+.fila-component .noms small { font: 500 12px/1.2 var(--lletra-codi); color: var(--text-suau); }
+.fila-component .icona-petita { color: var(--text-suau); }
+.fila-component b, .info-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-family: var(--lletra-codi);
+  color: #FFFFFF;
+  background: radial-gradient(circle at 35% 30%, #5CC1F5, #0091DC 55%, #005A8F);
+}
+.fila-component b { width: 26px; height: 26px; font-size: 13px; }
+
+.info-cap { display: flex; align-items: flex-start; gap: 12px; }
+.info-num { width: 40px; height: 40px; font-size: 17px; font-weight: 700; }
+.info-titol { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.info-titol strong { font: 700 26px/1.02 var(--lletra-titols); }
+.info-original { font: 500 13px/1.3 var(--lletra-codi); color: var(--text-suau); }
+.info-ref { font: 600 12px/1.3 var(--lletra-text); letter-spacing: .04em; color: var(--accent); }
+.info-desc em { font-style: normal; font-weight: 600; color: var(--avis); }
+.info-desc { margin: 0; font-size: 16px; color: var(--text-suau); }
+.info-tanca, .info-nav {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  cursor: pointer;
+}
+.info-tanca svg, .info-nav svg { width: 20px; height: 20px; }
+.info-peu { display: flex; align-items: center; gap: 10px; }
+.info-enllac {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  font: 600 16px/1 var(--lletra-text);
+  color: #FFFFFF;
+  background: linear-gradient(180deg, #2AA6E8, #0078B8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), inset 0 0 0 1px rgba(255, 255, 255, .15),
+              0 6px 16px -6px rgba(0, 90, 143, .7);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nom-peca:not([hidden]) { animation: apareix .3s ease-out .15s backwards; }
+  /* Els punts apareixen un darrere l'altre i després bateguen */
+  .punt {
+    animation:
+      surt .5s cubic-bezier(.34, 1.56, .64, 1) calc(.45s + var(--i) * .06s) backwards,
+      batec 2.8s ease-out calc(1.4s + var(--i) * .25s) infinite;
+  }
+  .punt[aria-pressed="true"], .mapa.amb-seleccio .punt { animation: none; }
+  @keyframes surt { from { transform: scale(0); opacity: 0; } }
+  @keyframes batec {
+    0%        { box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .95), 0 1px 4px rgba(0, 30, 50, .35),
+                            0 0 0 0 rgba(255, 255, 255, .7); }
+    55%, 100% { box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .95), 0 1px 4px rgba(0, 30, 50, .35),
+                            0 0 0 10px rgba(255, 255, 255, 0); }
+  }
+  .info-component > * { animation: puja .35s cubic-bezier(.2, .7, .2, 1) backwards; }
+}
+
+/* ---------- 2.14 Vidre líquid (Liquid Glass d'iOS) -----------------
+   .vidre  -> el material: gairebé transparent, desenfoca i aviva els
+              colors del que hi ha darrere i té una vora de llum.
+   .liquid -> el moviment: en prémer, el botó creix, s'estira cap al dit
+              com una gota i s'il·lumina on el toqueu. En deixar-lo anar
+              torna a lloc amb una molla (rebota un parell de vegades).  */
+:root {
+  /* corba de molla: passa una mica de llarg i s'assenta suaument */
+  --molla: linear(0, .092 4%, .305 8%, .557 12%, .791 17%, .974 21%, 1.092 25%, 1.151 29%, 1.162 33%,
+                  1.141 38%, 1.104 42%, 1.063 46%, 1.026 50%, .999 54%, .982 58%, .974 62%, .974 67%,
+                  .978 71%, .985 75%, .991 79%, .997 83%, 1.001 88%, 1.003 92%, 1);
+}
+.vidre {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, 0) 45%),
+    var(--vidre);
+  -webkit-backdrop-filter: blur(10px) saturate(190%);
+          backdrop-filter: blur(10px) saturate(190%);
+  box-shadow: var(--vidre-vora), var(--vidre-ombra);
+}
+/* Vora de llum: més brillant a dalt a l'esquerra i a baix a la dreta,
+   com la llum que travessa el vidre corbat */
+.vidre::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1.2px;
+  background: linear-gradient(135deg, var(--vidre-reflex), transparent 32% 68%, var(--vidre-reflex));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: .75;
+  pointer-events: none;
+}
+
+.liquid {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  /* es mou cap al dit (--tx, --ty) i s'estira en la direcció del moviment (--sx, --sy) */
+  transform: translate(var(--tx, 0px), var(--ty, 0px))
+             scale(calc(var(--s, 1) * var(--sx, 1)), calc(var(--s, 1) * var(--sy, 1)));
+  /* en deixar-lo anar: torna a lloc amb rebot */
+  transition: transform .6s cubic-bezier(.34, 1.56, .64, 1);
+  touch-action: manipulation;
+  -webkit-user-select: none;
+          user-select: none;
+}
+.liquid.premut {
+  --s: var(--s-premut, 1.05);             /* mida en prémer: 1.05 si el botó no en diu una altra */
+  transition: transform .3s cubic-bezier(.2, .9, .3, 1.15);   /* en prémer: ràpid i suau */
+}
+/* Si el navegador coneix les corbes linear(), el rebot és una molla de veritat */
+@supports (transition-timing-function: linear(0, 1)) {
+  .liquid { transition: transform .75s var(--molla); }
+  .filtre .lent { transition: translate .7s var(--molla), width .7s var(--molla), scale .4s var(--molla); }
+}
+.filtre.liquid { transform: none; }      /* el filtre no es mou: només la lent */
+
+/* La llum que segueix el dit (la posa el programa, vegeu 4.13) */
+.llum-dit {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  /* "overlay": aviva el color del botó en lloc de pintar-lo de blanc */
+  background: radial-gradient(circle 90px at var(--x, 50%) var(--y, 50%),
+              rgba(255, 255, 255, .7), rgba(255, 255, 255, .18) 45%, transparent 70%);
+  mix-blend-mode: overlay;
+  transition: opacity .5s ease;
+}
+.liquid.premut .llum-dit { opacity: 1; transition: opacity .08s ease; }
+@media (hover: hover) {
+  .liquid:hover .llum-dit { opacity: .4; }   /* amb ratolí, la llum segueix el cursor */
+}
+
+/* Si el mòbil demana menys moviment, no hi ha rebot ni estirament */
+@media (prefers-reduced-motion: reduce) {
+  .punt, .foto-base, .peca { transition: none; }   /* sense rebot */
+  .liquid, .liquid.premut { transition: none; --s: 1; --tx: 0px; --ty: 0px; --sx: 1; --sy: 1; }
+  .filtre .lent { transition: none; }
+}

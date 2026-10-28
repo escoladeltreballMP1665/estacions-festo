@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <!--
+    ======================================================================
+     APP DE LES ESTACIONS FESTO MPS
+     Institut Escola del Treball de Barcelona · Mecatrònica Industrial
+    ======================================================================
+
+     L'app està repartida en aquests fitxers:
+
+       index.html ........... aquesta pàgina: capçalera i caixa buida
+       css/estils.css ....... colors, mides, posició i animacions
+       js/app.js ............ dades de les estacions, pantalles i botons
+       js/fitxers.js ........ on són les fotos, els vídeos i els models 3D
+       img/, videos/, models3d/ ... els fitxers en si
+
+     Adreces de cada pantalla (també les dels codis QR):
+       .../#pick-place   .../#distribucio   .../#classificacio
+    ======================================================================
+  -->
+  <meta charset="utf-8">
+
+  <!-- Nom que surt a la pestanya del navegador -->
+  <title>Estacions Festo - MP1765</title>
+
+  <!-- Fa que la pàgina s'adapti a l'amplada del mòbil (sense haver de fer zoom) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Estacions Festo MPS de l'Institut Escola del Treball: fotos, vídeos, models 3D, entrades i sortides i Grafcet.">
+  <meta name="theme-color" content="#0091DC">
+  <link rel="icon" href="img/logo.webp">
+
+  <!-- Llibreria 3D (three.js): només es descarrega quan s'obre la pestanya 3D -->
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }
+  </script>
+
+  <!-- Tipus de lletra de Google Fonts (només els gruixos que es fan servir):
+         Barlow Condensed 700     -> títols (lletra estreta, d'estil industrial)
+         Barlow 400 i 600         -> textos normals
+         IBM Plex Mono 500 a 700  -> adreces del PLC (I0, Q0...) i dades tècniques -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Barlow:wght@400;600&family=IBM+Plex+Mono:wght@500;600;700&display=swap">
+
+  <link rel="stylesheet" href="css/estils.css">
+</head>
+<body>
+
+  <!-- Caixa buida. El programa (js/app.js) hi dibuixa la pantalla que toca. -->
+  <div class="columna" id="app" aria-live="polite"></div>
+
+  <!-- Primer les adreces dels fitxers, després el programa que les fa servir -->
+  <script src="js/fitxers.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
